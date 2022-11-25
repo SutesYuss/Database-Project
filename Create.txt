@@ -1,0 +1,159 @@
+CREATE TABLE LIBRARY_CARD(
+L_ID char(10) not null,
+LATE_FEES int not null,
+primary key(L_ID)
+);
+
+CREATE TABLE CheckedOutItems(
+Media_ID char(15) not null,
+CheckOutDate date not null,
+Due_Date date not null,
+L_ID char(10) not null,
+primary key(L_ID, Media_ID),
+foreign key(L_ID) references LIBRARY_CARD(L_ID) ON UPDATE CASCADE
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE CARD_HOLDER(
+Fname varchar(50) not null,
+Lname varchar(50) not null,
+Email varchar(50) not null,
+Age int not null,
+L_ID char(10) not null,
+Primary key(Email),
+foreign key(L_ID) references LIBRARY_CARD(L_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE MEDIA(
+Media_ID char(15) not null,
+Form varchar(50) not null,
+Title varchar(500) not null,
+Location varchar(50),
+Availability varchar(50),
+Copies int,
+primary key(Media_ID)
+);
+
+CREATE TABLE BOOK(
+Media_ID char(15) not null,
+B_ID char(10) not null,
+Genre varchar(50) not null,
+Title varchar(500) not null,
+Year int,
+Length int,
+Chapters int,
+Auth_ID char(10) not null,
+primary key(B_ID),
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE,
+foreign key(Auth_ID) references AUTHOR(AUTH_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE AUDIOBOOK(
+Media_ID char(15) not null,
+AB_ID char(10) not null,
+Genre varchar(50) not null,
+Title varchar(500) not null,
+Year int,
+Length int,
+Chapters int,
+Auth_ID char(10) not null,
+primary key(AB_ID),
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE,
+foreign key(Auth_ID) references AUTHOR(AUTH_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE ALBUM(
+Media_ID char(15) not null,
+A_ID char(10) not null,
+Genre varchar(50),
+Title varchar(500),
+Year int,
+Length varchar(10),
+Art_ID char(10) not null,
+primary key(A_ID),
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE,
+foreign key(Art_ID) references Artist(Art_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE TRACK(
+T_ID char(10) not null,
+A_ID char(10) not null,
+Art_ID char(10) not null,
+Genre varchar(50),
+Title varchar(500),
+Year int,
+Length time,
+primary key(T_ID),
+foreign key(A_ID) references ALBUM(A_ID) ON UPDATE CASCADE
+foreign key(Art_ID) references ARTIST(Art_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE MOVIE(
+Media_ID char(15) not null,
+M_ID char(10) not null,
+Genre varchar(50),
+Title varchar(500),
+Year int,
+Length time,
+Rating varchar(10),
+primary key(M_ID),
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE
+);
+
+
+CREATE TABLE ACTOR(
+Act_ID char(10) not null,
+Fname varchar(50),
+Lname varchar(50),
+primary key(Act_ID)
+);
+
+CREATE TABLE DIRECTOR(
+Dr_ID char(10) not null,
+Fname varchar(50),
+Lname varchar(50),
+primary key(Dr_ID)
+);
+
+
+CREATE TABLE ARTIST(
+Art_ID char(10) not null,
+Fname varchar(50),
+Lname varchar(50),
+primary key(Art_ID)
+);
+
+CREATE TABLE AUTHOR(
+Auth_ID char(10) not null,
+Fname varchar(50),
+Lname varchar(50),
+primary key(Auth_ID)
+);
+
+CREATE TABLE FEATURES(
+M_ID char(10) not null,
+Act_ID char(10) not null,
+primary key(Act_ID, M_ID),
+foreign key(M_ID) references Movie(M_ID) ON UPDATE CASCADE,
+foreign key(Act_ID) references ACTOR(Act_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE DIRECTED(
+M_ID char(10) not null,
+Dr_ID char(10) not null,
+primary key(Dr_ID, M_ID),
+foreign key(M_ID) references Movie(M_ID) ON UPDATE CASCADE,
+foreign key(Dr_ID) references DIRECTOR(Dr_ID) ON UPDATE CASCADE
+);
+
+CREATE TABLE ORDERED_MEDIA(
+Media_ID char(15) not null,
+Type varchar(50) not null,
+Form varchar(50) not null,
+Title varchar(500) not null,
+Price int,
+Copies int,
+ArrivalDate Date not null,
+primary key(Media_ID, Title)
+foreign key(Media_ID) references MEDIA(Media_ID) ON UPDATE CASCADE
+);
